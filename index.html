@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hangman Game | Priya Bala</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave+Display" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body onload="pickAWord()">
+	<div class="container-fluid">
+		<div class="jumbotron text-center">
+  			<h1>HANGMAN</h1>
+  			<p><span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span></p>
+  		</div>
+  		<div class="row">
+  			<div class="col-lg-6">
+  				<div class="panel panel-default">
+  					<div class="panel-body">
+  						<img class="img-responsive" src="assets/images/hangman.png">
+  						<span id="userMessage" class="messageText"></span>
+    				</div>
+				</div>
+  			</div>
+  			<div class="text-center col-lg-6">
+				<div class="panel panel-default">
+  					<div class="panel-body">
+    					<h3>Press any key to get started!</h3>
+						<h4>Wins:</h4>
+						<p id="totalWins"></p>
+						<h4>Current Word</h4>
+						<!-- <p><span id="currentWord" class="guessWord"></span></p> -->
+						<p id="currentWord" class="guessWord"></p>
+						<h4>Number of guesses remaining:</h4>
+						<p id="numOfGuesses"></p>
+						<h4>Letters already guessed</h4>
+						<div class="well" id="lettersGuessed"></div>
+						<span id="dispMessage"></span>
+  					</div>
+				</div>
+			</div>
+  		</div>
+
+	 </div>
+	<script type="text/javascript">
+		var curWord = document.getElementById("currentWord");
+		var lettersUsed = document.getElementById("lettersGuessed");
+		var countGuess = document.getElementById("numOfGuesses");
+		var gameMessage = document.getElementById("userMessage");
+		var displayMessage = document.getElementById("dispMessage");
+		var wins = 0;
+		var guessAllowed = 12;
+		var totalGuess = 0;
+		var remainingGuess = 12;
+		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+		var wordList = ["Awkward", "Bagpipes", "Crypt", "Dwarves", "Fishhook", "Gazebo", "Ivory", "Jukebox", "Kayak", "Pixel"];
+		var lettersGuessed = [];
+		function pickAWord() {
+			var pick = Math.floor(Math.random() * wordList.length);
+			var wordChoice = wordList[pick];
+			var pos = wordList.indexOf(wordList[pick]);
+			wordList.splice(pos, 1);
+			for(var i=0; i<wordChoice.length;i++) {
+				curWord.innerHTML += "<span id=pos"+i+">-</span>";	
+			}
+		}
+		document.onkeyup = function(event) {
+			displayMessage.innerHTML = "";
+      		var userChoice = event.key;
+      		if(lettersGuessed.indexOf(userChoice) === -1) {
+      			lettersGuessed.push(userChoice);
+      			lettersUsed.innerHTML += "<strong>"+userChoice.toUpperCase()+"<strong>";
+      			if(remainingGuess > 0) { 
+      				remainingGuess--;
+      			} else {
+      				gameMessage.innerHTML = "<strong>Time up! Try Again.</strong>";
+	      		}
+      			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+      		}else {
+      			displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
+      		}	
+
+      		// generate a new word after the initial success, or 12 guesses
+      	}	
+	</script>
+</body>
+</html>
