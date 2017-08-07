@@ -57,7 +57,7 @@
 		var wins = 0;
 		// var guessAllowed = 12;
 		// var totalGuess = 0;
-		var remainingGuess = 12;
+		var remainingGuess = 0;
 		var wordChoice;
 		var pick;
 		var pos;
@@ -72,8 +72,13 @@
 		// this function uses the Math.random function to pick a random word from the word list array,
 		// loop through the selected word and dynamically create the blank spaces on the document equal to the word length.
 		function pickAWord() {
+			curWord.innerHTML = "";
+			lettersGuessed.length = 0;
+			lettersUsed.innerHTML = "";
 			pick = Math.floor(Math.random() * wordList.length);
 			wordChoice = wordList[pick];
+			remainingGuess = wordChoice.length;
+			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
 			pos = wordList.indexOf(wordList[pick]);
 			wordList.splice(pos, 1);
 			for(var i=0; i<wordChoice.length;i++) {
@@ -84,29 +89,31 @@
 		// The onkeyup function captures the user input
 		document.onkeyup = function(event) {
 			displayMessage.innerHTML = "";
+			gameMessage.innerHTML = "";
 			userChoice = event.key;
+			
       		if(lettersGuessed.indexOf(userChoice) === -1) {
-      			lettersGuessed.push(userChoice);
+      			lettersGuessed.push(userChoice.toUpperCase());
       			//lettersUsed.innerHTML += "<strong>"+userChoice.toUpperCase()+"<strong>";
       			lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
+
       			if(remainingGuess > 0) { 
       				remainingGuess--;
+      				countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
       			} else {
       				gameMessage.innerHTML = "<strong>Time up! Try Again.</strong>";
       				pickAWord();
 	      		}
-      			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+      			//countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
 
       		}else {
       			displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
       		}	
+       	}	
 
-      		// generate a new word after the initial success, or 12 guesses
-      	}	
+      	function checkUserInput(userInput) {
 
-      	// function checkUserInput(userInput) {
-
-      	// }
+      	}
 	</script>
 </body>
 </html>
