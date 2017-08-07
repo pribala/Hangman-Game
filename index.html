@@ -46,45 +46,67 @@
 
 	 </div>
 	<script type="text/javascript">
+		//  access the HTML elements using the id of the elements
 		var curWord = document.getElementById("currentWord");
 		var lettersUsed = document.getElementById("lettersGuessed");
 		var countGuess = document.getElementById("numOfGuesses");
 		var gameMessage = document.getElementById("userMessage");
 		var displayMessage = document.getElementById("dispMessage");
+
+		// declaring variables for wins, remaining guesses
 		var wins = 0;
-		var guessAllowed = 12;
-		var totalGuess = 0;
+		// var guessAllowed = 12;
+		// var totalGuess = 0;
 		var remainingGuess = 12;
+		var wordChoice;
+		var pick;
+		var pos;
+		var userChoice;
+
 		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+		
+		// declaring arrays for word list and letters guessed by user
 		var wordList = ["Awkward", "Bagpipes", "Crypt", "Dwarves", "Fishhook", "Gazebo", "Ivory", "Jukebox", "Kayak", "Pixel"];
 		var lettersGuessed = [];
+
+		// this function uses the Math.random function to pick a random word from the word list array,
+		// loop through the selected word and dynamically create the blank spaces on the document equal to the word length.
 		function pickAWord() {
-			var pick = Math.floor(Math.random() * wordList.length);
-			var wordChoice = wordList[pick];
-			var pos = wordList.indexOf(wordList[pick]);
+			pick = Math.floor(Math.random() * wordList.length);
+			wordChoice = wordList[pick];
+			pos = wordList.indexOf(wordList[pick]);
 			wordList.splice(pos, 1);
 			for(var i=0; i<wordChoice.length;i++) {
 				curWord.innerHTML += "<span id=pos"+i+">-</span>";	
 			}
 		}
+
+		// The onkeyup function captures the user input
 		document.onkeyup = function(event) {
 			displayMessage.innerHTML = "";
-      		var userChoice = event.key;
+			userChoice = event.key;
       		if(lettersGuessed.indexOf(userChoice) === -1) {
       			lettersGuessed.push(userChoice);
-      			lettersUsed.innerHTML += "<strong>"+userChoice.toUpperCase()+"<strong>";
+      			//lettersUsed.innerHTML += "<strong>"+userChoice.toUpperCase()+"<strong>";
+      			lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
       			if(remainingGuess > 0) { 
       				remainingGuess--;
       			} else {
       				gameMessage.innerHTML = "<strong>Time up! Try Again.</strong>";
+      				pickAWord();
 	      		}
       			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+
       		}else {
       			displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
       		}	
 
       		// generate a new word after the initial success, or 12 guesses
       	}	
+
+      	// function checkUserInput(userInput) {
+
+      	// }
 	</script>
 </body>
 </html>
