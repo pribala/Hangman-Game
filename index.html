@@ -23,6 +23,12 @@
   						<img class="img-responsive" src="assets/images/hangman.png">
   						<span id="userMessage" class="messageText"></span>
     				</div>
+    				<div class="panel-footer" id="audioFrame">
+    					<audio controls id="h2O">
+    						<source src="assets/audio/djlang59_-_Drops_of_H2O_(_The_Filtered_Water_Treatment_).mp3" type="audio/mpeg">
+						</audio>
+						<div class="attribution-block"><a href="http://dig.ccmixter.org/files/djlang59/37792">Drops of H2O ( The Filtered Water Treatment )</a> by J.Lang (c) copyright 2012 Licensed under a Creative Commons <a href="http://creativecommons.org/licenses/by/3.0/">Attribution (3.0)</a> license. Ft: Airtone</div>
+    				</div>
 				</div>
   			</div>
   			<div class="text-center col-lg-6">
@@ -52,6 +58,8 @@
 		var countGuess = document.getElementById("numOfGuesses");
 		var gameMessage = document.getElementById("userMessage");
 		var displayMessage = document.getElementById("dispMessage");
+		var playAudio = document.getElementById("audioFrame");
+		var audioFile = document.getElementById("h2O");
 
 		// declaring variables for wins, remaining guesses
 		var wins = 0;
@@ -79,6 +87,8 @@
 			pick = Math.floor(Math.random() * wordList.length);
 			wordChoice = wordList[pick].toLowerCase();
 			remainingGuess = wordChoice.length + 5;
+			//console.log(wordChoice.length);
+			//remainingGuess = 12;
 			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
 			pos = wordList.indexOf(wordList[pick]);
 			wordList.splice(pos, 1);
@@ -92,6 +102,7 @@
 
 		// The onkeyup function captures the user input
 		document.onkeyup = function(event) {
+			audioFile.pause();
 			displayMessage.innerHTML = "";
 			gameMessage.innerHTML = "";
 			userChoice = event.key;
@@ -120,9 +131,12 @@
       		curWord.innerHTML = "<span>" + selectedWord + "</span>";
       		if(selectedWord.join("") === wordChoice) {
       			gameMessage.innerHTML = "<strong>You got it!</strong>";
+      			audioFile.play();
       			pickAWord();
       		}
       	}
+
+      	
 	</script>
 </body>
 </html>
