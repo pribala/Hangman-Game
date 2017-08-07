@@ -62,28 +62,32 @@
 		var pick;
 		var pos;
 		var userChoice;
-
+		
 		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
 		
 		// declaring arrays for word list and letters guessed by user
 		var wordList = ["Awkward", "Bagpipes", "Crypt", "Dwarves", "Fishhook", "Gazebo", "Ivory", "Jukebox", "Kayak", "Pixel"];
 		var lettersGuessed = [];
+		var selectedWord = [];
 
 		// this function uses the Math.random function to pick a random word from the word list array,
 		// loop through the selected word and dynamically create the blank spaces on the document equal to the word length.
 		function pickAWord() {
-			curWord.innerHTML = "";
 			lettersGuessed.length = 0;
+			selectedWord.length = 0;
 			lettersUsed.innerHTML = "";
 			pick = Math.floor(Math.random() * wordList.length);
-			wordChoice = wordList[pick];
-			remainingGuess = wordChoice.length;
+			wordChoice = wordList[pick].toLowerCase();
+			remainingGuess = wordChoice.length + 5;
 			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
 			pos = wordList.indexOf(wordList[pick]);
 			wordList.splice(pos, 1);
 			for(var i=0; i<wordChoice.length;i++) {
-				curWord.innerHTML += "<span id=pos"+i+">-</span>";	
+				//curWord.innerHTML += "<span id=pos"+i+">-</span>";
+				//curWord.innerHTML +=	
+				selectedWord.push("-");
 			}
+			curWord.innerHTML = "<span>" + selectedWord + "</span>";
 		}
 
 		// The onkeyup function captures the user input
@@ -91,28 +95,33 @@
 			displayMessage.innerHTML = "";
 			gameMessage.innerHTML = "";
 			userChoice = event.key;
-			
-      		if(lettersGuessed.indexOf(userChoice) === -1) {
-      			lettersGuessed.push(userChoice.toUpperCase());
-      			//lettersUsed.innerHTML += "<strong>"+userChoice.toUpperCase()+"<strong>";
-      			lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
-
-      			if(remainingGuess > 0) { 
-      				remainingGuess--;
-      				countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
-      			} else {
-      				gameMessage.innerHTML = "<strong>Time up! Try Again.</strong>";
-      				pickAWord();
-	      		}
-      			//countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
-
-      		}else {
-      			displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
-      		}	
-       	}	
+			console.log(wordChoice);
+			if(lettersGuessed.indexOf(userChoice) === -1) {
+	      		lettersGuessed.push(userChoice.toLowerCase());
+	      		lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
+	      		checkUserInput(userChoice);
+	      		remainingGuess--;
+	      		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+	      		if(remainingGuess === 0 && selectedWord.join("") !== wordChoice) { 
+	      			gameMessage.innerHTML = "<strong>Time up! Try Again.</strong>";
+	      			pickAWord();
+		    	}
+	      	}else {
+	      		displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
+	      	}	
+      	}	
 
       	function checkUserInput(userInput) {
-
+      		for(var j=0; j<wordChoice.length; j++) {
+      			if(wordChoice[j] === userInput){
+      				selectedWord.splice(j, 1, userInput);
+      			}
+      		}
+      		curWord.innerHTML = "<span>" + selectedWord + "</span>";
+      		if(selectedWord.join("") === wordChoice) {
+      			gameMessage.innerHTML = "<strong>You got it!</strong>";
+      			pickAWord();
+      		}
       	}
 	</script>
 </body>

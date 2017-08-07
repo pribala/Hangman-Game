@@ -10,8 +10,12 @@ h1 {
 	font-size: 20px;
 }
 
-.guessWord span {
+/*.guessWord span {
 	margin-left: 15px;
+}*/
+
+.guessWord {
+	letter-spacing: 15px;
 }
 
 .well {
