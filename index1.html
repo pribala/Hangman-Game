@@ -21,11 +21,14 @@
   					<div class="panel-body">
   						<div class="row">
   							<div class="col-lg-6">
-  								<img class="img-responsive" src="assets/images/hangmanImg.jpg">
+  								<figure>
+	  								<img class="img-responsive" src="assets/images/hangmanImg.jpg">
+	  								<figcaption>Artist: Anya Srinivasan</figcaption>
+  								</figure>
   							</div>
   							<div class="col-md-offset-1 col-lg-5">
   								<canvas id="imgCanvas" width="200" height="350"></canvas>
-  								<p id="userMessage" class="messageText">Let's play!!!</p>
+  								<p id="userMessage" class="messageText"></p>
   							</div>
   						</div>	
   					</div>
@@ -74,7 +77,16 @@
 		var drawCanvas = document.getElementById("imgCanvas");
 		if (drawCanvas.getContext) {
 				var ctx = drawCanvas.getContext('2d');
-		}		
+				// Create gradient
+				var grd = ctx.createLinearGradient(0,0,300,0);
+				grd.addColorStop(0,"red");
+				grd.addColorStop(1,"white");
+
+				ctx.font = "20px Arial";
+				ctx.fillStyle = grd;
+				ctx.fillText("Lets Play!!!", 50, 20);
+		}	
+		//drawPole();	
 		// declaring variables for wins, remaining guesses, user choice
 		var wins = 0;
 		var remainingGuess = 0;
@@ -171,7 +183,9 @@
 		 	lettersUsed.innerHTML = "";
 		 	displayMessage.innerHTML = "";
 			remainingGuess = 0;
-		 }
+			ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+			ctx.fillText("Lets Play!!!", 50, 20);
+		}
 
 		 function hangman() {
 		 	if(wordChoice.indexOf(userChoice) === -1 && lettersGuessed.indexOf(userChoice) === -1) {
@@ -220,7 +234,20 @@
     			ctx.stroke();
 			}
 		}		
+
+		function drawPole() {
+				ctx.beginPath();
+			    ctx.moveTo(50,350);
+			    ctx.lineTo(50,20);
+			    ctx.lineTo(175,20);
+			    ctx.moveTo(110,20);
+			    ctx.lineTo(110,60);
+			    ctx.stroke();
+			    ctx.closePath();
+		}
 	</script>
 </body>
 </html>
 
+<!-- Issue: Clear the canvas for next word
+convert all char to lower case -->
