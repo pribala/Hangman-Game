@@ -26,10 +26,10 @@
   							</div>
   							<div class="col-lg-6">	
   								<canvas id="imgCanvas" width="250" height="400"></canvas>
-  								<span id="userMessage" class="messageText"></span>
+  								<p id="userMessage" class="messageText"></p>
   							</div>
-  						</div>		
-    				</div>
+  						</div>	
+  					</div>
     				<div class="panel-footer" id="audioFrame">
     					<audio controls id="h2O">
     						<source src="assets/audio/djlang59_-_Drops_of_H2O_(_The_Filtered_Water_Treatment_).mp3" type="audio/mpeg">
@@ -76,7 +76,7 @@
 		if (drawCanvas.getContext) {
 				var ctx = drawCanvas.getContext('2d');
 		}		
-		// declaring variables for wins, remaining guesses
+		// declaring variables for wins, remaining guesses, user choice
 		var wins = 0;
 		var remainingGuess = 0;
 		var wordChoice;
@@ -152,6 +152,7 @@
       	}
 
       	pickWord.addEventListener('click', function() {
+      		gameMessage.innerHTML = "";
       		audioFile.pause();
       		pickAWord();
       	});
@@ -170,17 +171,17 @@
 		 	selectedWord.length = 0;
 		 	lettersUsed.innerHTML = "";
 		 	displayMessage.innerHTML = "";
-			gameMessage.innerHTML = "";
-		 	remainingGuess = 0;
+			remainingGuess = 0;
 		 }
 
 		 function hangman() {
-		 	if(wordChoice.indexOf(userChoice) === -1) {
+		 	if(wordChoice.indexOf(userChoice) === -1 && lettersGuessed.indexOf(userChoice) === -1) {
 		 		draw(stage);
 		 		stage++;
 		 	}
 		 }
 
+		 // Function draws the hangman image in steps each time user makes a wrong guess
 		 function draw(step) {
   			ctx.beginPath();
   			if(step === 0) {
@@ -223,3 +224,4 @@
 	</script>
 </body>
 </html>
+
