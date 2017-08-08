@@ -33,9 +33,14 @@ h1 {
 	font-weight; bold;
 	font-family: 'Sedgwick Ave Display', cursive;
 	font-size: 20px;
+	margin-bottom: 15px;
 }
 
 input[type="text"] {
 	font-family: 'Sedgwick Ave Display', cursive;
 	font-size: 20px;
+}
+
+#imgCanvas {
+	
 }

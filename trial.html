@@ -5,7 +5,7 @@
 	<title>Document</title>
 </head>
 <body onload="draw();">
-	<canvas id="tutorial" width="150" height="150"></canvas>	
+	<canvas id="tutorial" width="250" height="500"></canvas>	
 
 	<script type="text/javascript">
     	function draw() {
@@ -15,17 +15,33 @@
 
 			    ctx.beginPath();
     			ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
-			    // ctx.moveTo(110, 75);
-			    // ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
-			    // ctx.moveTo(65, 65);
-			    // ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
-			    // ctx.moveTo(95, 65);
-			    // ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+			    ctx.moveTo(110, 75);
+			    ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+			    ctx.moveTo(65, 65);
+			    ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+			    ctx.moveTo(95, 65);
+			    ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
 			    ctx.stroke();
 			    
 			    
-    			ctx.moveTo(75, 100);
-    			ctx.lineTo(75, 245);
+    			ctx.moveTo(75, 125);
+    			ctx.lineTo(75, 300);
+    			ctx.stroke();
+
+    			ctx.moveTo(75, 150);
+    			ctx.lineTo(25,180);
+    			ctx.stroke();
+
+    			ctx.moveTo(75, 150);
+    			ctx.lineTo(125,180);
+    			ctx.stroke();
+
+    			ctx.moveTo(75, 300);
+    			ctx.lineTo(25,350);
+    			ctx.stroke();
+
+    			ctx.moveTo(75, 300);
+    			ctx.lineTo(125,350);
     			ctx.stroke();
 
 

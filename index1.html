@@ -20,8 +20,15 @@
   			<div class="col-lg-6">
   				<div class="panel panel-default">
   					<div class="panel-body">
-  						<img class="img-responsive" src="assets/images/hangman.png">
-  						<span id="userMessage" class="messageText"></span>
+  						<div class="row">
+  							<div class="col-lg-6">
+  								<img class="img-responsive" src="assets/images/hangman.png">
+  							</div>
+  							<div class="col-lg-6">	
+  								<canvas id="imgCanvas" width="250" height="400"></canvas>
+  								<span id="userMessage" class="messageText"></span>
+  							</div>
+  						</div>		
     				</div>
     				<div class="panel-footer" id="audioFrame">
     					<audio controls id="h2O">
@@ -45,8 +52,8 @@
 						<p id="numOfGuesses"></p>
 						<h4>Letters already guessed</h4>
 						<div class="well" id="lettersGuessed"></div>
-						<span id="dispMessage"></span>
 						<button id="nextWord" class="generateWord">Next Word</button>
+						<p id="dispMessage"></p>
 						<!-- <button id="guessWord" class="generateWord">Guess Word</button> -->
   					</div>
 				</div>
@@ -65,7 +72,10 @@
 		var audioFile = document.getElementById("h2O");
 		var pickWord = document.getElementById("nextWord");
 		// var userGuess = document.getElementById("guessWord");
-
+		var drawCanvas = document.getElementById("imgCanvas");
+		if (drawCanvas.getContext) {
+				var ctx = drawCanvas.getContext('2d');
+		}		
 		// declaring variables for wins, remaining guesses
 		var wins = 0;
 		var remainingGuess = 0;
@@ -73,6 +83,7 @@
 		var pick;
 		var pos;
 		var userChoice;
+		var stage = 0;
 		
 		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
 		
@@ -102,7 +113,7 @@
 			//audioFile.pause();
 			userChoice = event.key;
 			console.log(wordChoice);
-			
+			hangman();
 			if(lettersGuessed.indexOf(userChoice) === -1) {
 	      		lettersGuessed.push(userChoice.toLowerCase());
 	      		lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
@@ -121,8 +132,9 @@
 	      		}
 	      	}else {
 	      		displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
-	      	}	
-      	}	
+	       	}	
+
+	    }	
 
       	function checkUserInput(userInput) {
       		for(var j=0; j<wordChoice.length; j++) {
@@ -161,6 +173,53 @@
 			gameMessage.innerHTML = "";
 		 	remainingGuess = 0;
 		 }
+
+		 function hangman() {
+		 	if(wordChoice.indexOf(userChoice) === -1) {
+		 		draw(stage);
+		 		stage++;
+		 	}
+		 }
+
+		 function draw(step) {
+  			ctx.beginPath();
+  			if(step === 0) {
+    			ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+    			ctx.stroke();
+    		} else if(step === 1) {	
+				ctx.moveTo(110, 75);
+				ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+				ctx.stroke();
+			} else if(step === 2) {
+				ctx.moveTo(65, 65);
+				ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+				ctx.stroke();
+			}else if(step === 3) {	
+				ctx.moveTo(95, 65);
+				ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+				ctx.stroke();
+			}else if(step === 4) {
+				ctx.moveTo(75, 125);
+    			ctx.lineTo(75, 300);
+    			ctx.stroke();
+			} else if(step === 5) {
+				ctx.moveTo(75, 150);
+    			ctx.lineTo(25,180);
+    			ctx.stroke();
+			}else if(step === 6) {
+				ctx.moveTo(75, 150);
+    			ctx.lineTo(125,180);
+    			ctx.stroke();
+			}else if(step === 7) {
+				ctx.moveTo(75, 300);
+    			ctx.lineTo(25,350);
+    			ctx.stroke();
+			}else if(step === 8) {
+				ctx.moveTo(75, 300);
+    			ctx.lineTo(125,350);
+    			ctx.stroke();
+			}
+		}		
 	</script>
 </body>
 </html>
