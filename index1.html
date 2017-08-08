@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hangman Game | Priya Bala</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave+Display" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body onload="pickAWord()">
+	<div class="container-fluid">
+		<div class="jumbotron text-center">
+  			<h1>HANGMAN</h1>
+  			<p><span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span></p>
+  		</div>
+  		<div class="row">
+  			<div class="col-lg-6">
+  				<div class="panel panel-default">
+  					<div class="panel-body">
+  						<img class="img-responsive" src="assets/images/hangman.png">
+  						<span id="userMessage" class="messageText"></span>
+    				</div>
+    				<div class="panel-footer" id="audioFrame">
+    					<audio controls id="h2O">
+    						<source src="assets/audio/djlang59_-_Drops_of_H2O_(_The_Filtered_Water_Treatment_).mp3" type="audio/mpeg">
+						</audio>
+						<div class="attribution-block"><a href="http://dig.ccmixter.org/files/djlang59/37792">Drops of H2O ( The Filtered Water Treatment )</a> by J.Lang (c) copyright 2012 Licensed under a Creative Commons <a href="http://creativecommons.org/licenses/by/3.0/">Attribution (3.0)</a> license. Ft: Airtone</div>
+    				</div>
+				</div>
+  			</div>
+  			<div class="text-center col-lg-6">
+				<div class="panel panel-default">
+  					<div class="panel-body">
+    					<h3>Press any key to get started!</h3>
+						<h4>Wins:</h4>
+						<p id="totalWins"></p>
+						<h4>Current Word</h4>
+						<!-- <p><span id="currentWord" class="guessWord"></span></p> -->
+						<p id="currentWord" class="guessWord"></p>
+						<!-- <p><input id="typeWord" type="text" placeholder="Guess the word"></p> -->
+						<h4>Number of guesses remaining:</h4>
+						<p id="numOfGuesses"></p>
+						<h4>Letters already guessed</h4>
+						<div class="well" id="lettersGuessed"></div>
+						<span id="dispMessage"></span>
+						<button id="nextWord" class="generateWord">Next Word</button>
+						<!-- <button id="guessWord" class="generateWord">Guess Word</button> -->
+  					</div>
+				</div>
+			</div>
+  		</div>
+
+	 </div>
+	<script type="text/javascript">
+		//  access the HTML elements using the id of the elements
+		var curWord = document.getElementById("currentWord");
+		var lettersUsed = document.getElementById("lettersGuessed");
+		var countGuess = document.getElementById("numOfGuesses");
+		var gameMessage = document.getElementById("userMessage");
+		var displayMessage = document.getElementById("dispMessage");
+		var playAudio = document.getElementById("audioFrame");
+		var audioFile = document.getElementById("h2O");
+		var pickWord = document.getElementById("nextWord");
+		// var userGuess = document.getElementById("guessWord");
+
+		// declaring variables for wins, remaining guesses
+		var wins = 0;
+		var remainingGuess = 0;
+		var wordChoice;
+		var pick;
+		var pos;
+		var userChoice;
+		
+		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+		
+		// declaring arrays for word list and letters guessed by user
+		var wordList = ["Awkward", "Bagpipes", "Crypt", "Dwarves", "Fishhook", "Gazebo", "Ivory", "Jukebox", "Kayak", "Pixel"];
+		var lettersGuessed = [];
+		var selectedWord = [];
+
+		// this function uses the Math.random function to pick a random word from the word list array,
+		// loop through the selected word and dynamically create the blank spaces on the document equal to the word length.
+		function pickAWord() {
+			resetVariables();
+			pick = Math.floor(Math.random() * wordList.length);
+			wordChoice = wordList[pick].toLowerCase();
+			remainingGuess = wordChoice.length + 5;
+			countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+			pos = wordList.indexOf(wordList[pick]);
+			wordList.splice(pos, 1);
+			for(var i=0; i<wordChoice.length;i++) {
+				selectedWord.push("-");
+			}
+			curWord.innerHTML = "<span>" + selectedWord + "</span>";
+		}
+
+		// The onkeyup function captures the user input
+		document.onkeyup = function(event) {
+			//audioFile.pause();
+			userChoice = event.key;
+			console.log(wordChoice);
+			
+			if(lettersGuessed.indexOf(userChoice) === -1) {
+	      		lettersGuessed.push(userChoice.toLowerCase());
+	      		lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
+	      		checkUserInput(userChoice);
+	      		if(remainingGuess > 0 && selectedWord.join("") !== wordChoice) {
+	      			remainingGuess--;
+	      		}
+	      		countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
+	      		if(remainingGuess === 0 && selectedWord.join("") !== wordChoice) { 
+	      			gameMessage.innerHTML = "<strong>Time up! Try Again.</strong>";
+	      			//pickAWord();
+	      			resetVariables();
+	      			audioFile.src = "assets/audio/crazy-making-loopy-creature.wav";
+	      			audioFile.type = "audio/wav"
+	      			audioFile.play();
+	      		}
+	      	}else {
+	      		displayMessage.innerHTML = "<strong>Letter already input before. Choose another letter.</strong>";	
+	      	}	
+      	}	
+
+      	function checkUserInput(userInput) {
+      		for(var j=0; j<wordChoice.length; j++) {
+      			if(wordChoice[j] === userInput){
+      				selectedWord.splice(j, 1, userInput);
+      			}
+      		}
+      		curWord.innerHTML = "<span>" + selectedWord + "</span>";
+      		if(selectedWord.join("") === wordChoice) {
+      			gameMessage.innerHTML = "<strong>You got it!</strong>";
+      			audioFile.src = "assets/audio/djlang59_-_Drops_of_H2O_(_The_Filtered_Water_Treatment_).mp3";
+      			audioFile.type = "mp3";
+      			audioFile.play();
+      		}
+      	}
+
+      	pickWord.addEventListener('click', function() {
+      		audioFile.pause();
+      		pickAWord();
+      	});
+
+      	// userGuess.addEventListener('click', function() {
+      	// 	if(selectedWord.join("") === wordChoice) {
+      	// 		gameMessage.innerHTML = "<strong>You got it!</strong>";
+      	// 		audioFile.src = "assets/audio/djlang59_-_Drops_of_H2O_(_The_Filtered_Water_Treatment_).mp3";
+      	// 		audioFile.type = "mp3";
+      	// 		audioFile.play();
+      	// 	}
+      	// });
+
+       	function resetVariables() {
+       		lettersGuessed.length = 0;
+		 	selectedWord.length = 0;
+		 	lettersUsed.innerHTML = "";
+		 	displayMessage.innerHTML = "";
+			gameMessage.innerHTML = "";
+		 	remainingGuess = 0;
+		 }
+	</script>
+</body>
+</html>

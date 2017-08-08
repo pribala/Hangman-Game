@@ -26,3 +26,16 @@ h1 {
 	color: red;
 	font-size: 25px;
 }
+
+.generateWord {
+	background-color: #DD4814;
+	padding: 10px;
+	font-weight; bold;
+	font-family: 'Sedgwick Ave Display', cursive;
+	font-size: 20px;
+}
+
+input[type="text"] {
+	font-family: 'Sedgwick Ave Display', cursive;
+	font-size: 20px;
+}
