@@ -57,14 +57,14 @@ function pickAWord() {
 document.onkeyup = function(event) {
 	audioFile.pause();
 	gameMessage.innerHTML = "";
-	userChoice = event.key;
+	userChoice = (String.fromCharCode(event.keyCode)).toLowerCase();
 	//console.log(wordChoice);
 	hangman();
 	if(lettersGuessed.indexOf(userChoice) === -1) {
-    	lettersGuessed.push(userChoice.toLowerCase());
+    	lettersGuessed.push(userChoice);
 	    lettersUsed.innerHTML = "<strong>"+lettersGuessed+"<strong>";
 	    checkUserInput(userChoice);
-	    if(remainingGuess > 0 && selectedWord.join("") !== wordChoice) {
+	    if(remainingGuess > 0 && selectedWord.join("") !== wordChoice && lettersGuessed.length !== 0) {
 	    	remainingGuess--;
 	    }
 	    countGuess.innerHTML = "<strong>"+remainingGuess+"</strong>";
